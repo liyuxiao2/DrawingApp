@@ -1,4 +1,4 @@
-class Circle {
+export class Circle {
   constructor(radius, color, x, y) {
     this.radius = radius;
     this.color = color;

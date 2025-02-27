@@ -1,4 +1,4 @@
-class Square {
+export class Square {
   constructor(side, color, x, y) {
     this.side = side;
     this.color = color;
