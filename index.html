@@ -1,11 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Canvas Drawing App</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <canvas id="canvas" width="800" height="600"></canvas>
+  <h1>Canvas Drawing App</h1>
+  <div id="controls">
+    <label for="shapeSelect">Shape:</label>
+    <select id="shapeSelect">
+      <option value="circle">Circle</option>
+      <option value="square">Square</option>
+      <option value="triangle">Triangle</option>
+    </select>
+
+    <div id="parameters">
+      <div id="circleParams" class="paramGroup">
+        <label for="radiusInput">Radius:</label>
+        <input type="number" id="radiusInput" min="1" value="50">
+      </div>
+      <div id="squareParams" class="paramGroup" style="display:none;">
+        <label for="sideInput">Side Length:</label>
+        <input type="number" id="sideInput" min="1" value="50">
+      </div>
+      <div id="triangleParams" class="paramGroup" style="display:none;">
+        <label for="sideAInput">Side A:</label>
+        <input type="number" id="sideAInput" min="1" value="50">
+        <label for="sideBInput">Side B:</label>
+        <input type="number" id="sideBInput" min="1" value="50">
+        <label for="sideCInput">Side C:</label>
+        <input type="number" id="sideCInput" min="1" value="50">
+      </div>
+    </div>
+    
+    <label for="colorInput">Color:</label>
+    <input type="color" id="colorInput" value="#ff0000">
+
+    <button id="drawButton">Draw Shape</button>
+    <button id="undoButton">Undo</button>
+    <button id="clearButton">Clear</button>
+  </div>
+
+  <canvas id="drawingCanvas" width="1000" height="600" style="border:1px solid #000;"></canvas>
+
+  <script src="js/circle.js"></script>
+  <script src="js/square.js"></script>
+  <script src="js/triangle.js"></script>
+  <script src="js/dom.js"></script>
 </body>
 </html>
+
