@@ -1,3 +1,17 @@
+/**
+
+Author: Liyu, Nevathan 
+
+Student Number: 400559252, 400576019
+
+Date Created: Mar 6 2025
+
+
+
+This JavaScript file defines the Triangle class, which represents a triangle shape on an HTML5 canvas.
+
+*/
+
 export class Triangle{
     constructor(sideA,sideB,sideC, color, x, y){
         this.sideA = sideA;
@@ -8,6 +22,10 @@ export class Triangle{
         this.y = y;
     }
 
+
+    /**
+     * Draws the triangle on the canvas.
+     */
     draw(){
         ctx.beginPath();
         ctx.moveTo(this.x,this.y);
