@@ -10,7 +10,7 @@ Date Created: Mar 6 2025
 
 This JavaScript file defines the Circle class, which represents a circle shape on an HTML5 canvas.
 
-**/
+*/
 
 
 export class Circle {
