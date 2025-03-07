@@ -33,17 +33,17 @@ window.addEventListener('load', function() {
     const undoButton = document.getElementById('undoButton');
     const clearButton = document.getElementById('clearButton');
 
-  const circleParams = document.getElementById('circleParams');
-  const squareParams = document.getElementById('squareParams');
-  const triangleParams = document.getElementById('triangleParams');
+    const circleParams = document.getElementById('circleParams');
+    const squareParams = document.getElementById('squareParams');
+    const triangleParams = document.getElementById('triangleParams');
 
-  const radiusInput = document.getElementById('radiusInput');
-  const sideInput = document.getElementById('sideInput');
-  const sideAInput = document.getElementById('sideAInput');
-  const sideBInput = document.getElementById('sideBInput');
-  const sideCInput = document.getElementById('sideCInput');
+    const radiusInput = document.getElementById('radiusInput');
+    const sideInput = document.getElementById('sideInput');
+    const sideAInput = document.getElementById('sideAInput');
+    const sideBInput = document.getElementById('sideBInput');
+    const sideCInput = document.getElementById('sideCInput');
 
-  let shapes = [];
+    let shapes = [];
 
     if (localStorage.getItem('shapes')) {
         try {
@@ -128,15 +128,15 @@ window.addEventListener('load', function() {
         }
     });
 
-  undoButton.addEventListener('click', function() {
-      shapes.pop();
-      redrawCanvas();
-      saveShapes();
+    undoButton.addEventListener('click', function() {
+        shapes.pop();
+        redrawCanvas();
+        saveShapes();
+    });
+  
+    clearButton.addEventListener('click', function() {
+        shapes = [];
+        redrawCanvas();
+        localStorage.removeItem('shapes');
+    });
   });
-
-  clearButton.addEventListener('click', function() {
-      shapes = [];
-      redrawCanvas();
-      localStorage.removeItem('shapes');
-  });
-});
