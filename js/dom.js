@@ -1,4 +1,4 @@
-import { Circle} from './circle.js';
+import { Circle } from './circle.js';
 import { Square } from './square.js';
 import { Triangle } from './triangle.js';
 
@@ -6,6 +6,7 @@ window.addEventListener('load', function() {
     const canvas = document.getElementById('drawingCanvas');
     const ctx = canvas.getContext('2d');
     window.ctx = ctx; 
+
     const shapeSelect = document.getElementById('shapeSelect');
     const colorInput = document.getElementById('colorInput');
     const drawButton = document.getElementById('drawButton');
@@ -24,47 +25,33 @@ window.addEventListener('load', function() {
 
     let shapes = [];
 
-    // Load stored shapes from local storage
     if (localStorage.getItem('shapes')) {
         try {
             const storedShapes = JSON.parse(localStorage.getItem('shapes'));
             storedShapes.forEach(obj => {
                 let shape;
-                if (obj.type === 'circle') {
-                    shape = new Circle(obj.radius, obj.color, obj.x, obj.y);
-                } else if (obj.type === 'square') {
-                    shape = new Square(obj.side, obj.color, obj.x, obj.y);
-                } else if (obj.type === 'triangle') {
-                    shape = new Triangle(obj.sideA, obj.sideB, obj.sideC, obj.color, obj.x, obj.y);
-                }
-                if (shape) {
-                    shapes.push(shape);
-                }
+                if (obj.type === 'circle') shape = new Circle(obj.radius, obj.color, obj.x, obj.y);
+                if (obj.type === 'square') shape = new Square(obj.side, obj.color, obj.x, obj.y);
+                if (obj.type === 'triangle') shape = new Triangle(obj.sideA, obj.sideB, obj.sideC, obj.color, obj.x, obj.y);
+                if (shape) shapes.push(shape);
             });
             redrawCanvas();
         } catch(e) {
-            console.error("Error loading shapes from local storage", e);
+            console.error(e);
         }
     }
 
     function saveShapes() {
-        const shapesToStore = shapes.map(shape => {
-            if (shape instanceof Circle) {
-                return { type: 'circle', radius: shape.radius, color: shape.color, x: shape.x, y: shape.y };
-            } else if (shape instanceof Square) {
-                return { type: 'square', side: shape.side, color: shape.color, x: shape.x, y: shape.y };
-            } else if (shape instanceof Triangle) {
-                return { type: 'triangle', sideA: shape.sideA, sideB: shape.sideB, sideC: shape.sideC, color: shape.color, x: shape.x, y: shape.y };
-            }
-        });
+        const shapesToStore = shapes.map(shape => ({
+            ...shape,
+            type: shape.constructor.name.toLowerCase()
+        }));
         localStorage.setItem('shapes', JSON.stringify(shapesToStore));
     }
 
     function redrawCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        shapes.forEach(shape => {
-            shape.draw();
-        });
+        shapes.forEach(shape => shape.draw());
     }
 
     shapeSelect.addEventListener('change', function() {
@@ -72,32 +59,39 @@ window.addEventListener('load', function() {
         circleParams.style.display = shape === 'circle' ? 'inline-block' : 'none';
         squareParams.style.display = shape === 'square' ? 'inline-block' : 'none';
         triangleParams.style.display = shape === 'triangle' ? 'inline-block' : 'none';
+
+        colorInput.className = shape;
+    });
+
+    colorInput.addEventListener('input', () => {
+        if (shapeSelect.value === 'triangle') {
+            colorInput.style.backgroundColor = colorInput.value;
+        } else {
+            colorInput.style.backgroundColor = '';
+        }
     });
 
     function createShape(x, y) {
-        const shapeType = shapeSelect.value;
         const color = colorInput.value;
-        let shape;
-        if (shapeType === 'circle') {
-            const radius = parseInt(radiusInput.value);
-            shape = new Circle(radius, color, x, y);
-        } else if (shapeType === 'square') {
-            const side = parseInt(sideInput.value);
-            shape = new Square(side, color, x, y);
-        } else if (shapeType === 'triangle') {
-            const sideA = parseInt(sideAInput.value);
-            const sideB = parseInt(sideBInput.value);
-            const sideC = parseInt(sideCInput.value); 
-            shape = new Triangle(sideA, sideB, sideC, color, x, y);
+        switch(shapeSelect.value) {
+            case 'circle':
+                return new Circle(parseInt(radiusInput.value), color, x, y);
+            case 'square':
+                return new Square(parseInt(sideInput.value), color, x, y);
+            case 'triangle':
+                return new Triangle(
+                    parseInt(sideAInput.value),
+                    parseInt(sideBInput.value),
+                    parseInt(sideCInput.value),
+                    color, x, y
+                );
+            default: return null;
         }
-        return shape;
     }
 
     canvas.addEventListener('click', function(e) {
         const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const shape = createShape(x, y);
+        const shape = createShape(e.clientX - rect.left, e.clientY - rect.top);
         if (shape) {
             shapes.push(shape);
             shape.draw();
@@ -106,9 +100,7 @@ window.addEventListener('load', function() {
     });
 
     drawButton.addEventListener('click', function() {
-        const x = canvas.width / 2;
-        const y = canvas.height / 2;
-        const shape = createShape(x, y);
+        const shape = createShape(canvas.width / 2, canvas.height / 2);
         if (shape) {
             shapes.push(shape);
             shape.draw();
