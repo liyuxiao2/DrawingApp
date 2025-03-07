@@ -1,4 +1,24 @@
-import { Circle } from './circle.js';
+/**
+
+Author: Liyu, Nevathan 
+
+Student Number: 400559252, 400576019
+
+Date Created: Mar 6 2025
+
+
+
+This JavaScript file handles user interactions for drawing shapes on an HTML5 canvas.
+
+Users can select a shape, set its color and dimensions, and draw it on the canvas.
+
+The application supports undoing the last shape, clearing the canvas, and saving shapes to local storage.
+
+
+*/
+
+
+import { Circle} from './circle.js';
 import { Square } from './square.js';
 import { Triangle } from './triangle.js';
 
@@ -13,17 +33,17 @@ window.addEventListener('load', function() {
     const undoButton = document.getElementById('undoButton');
     const clearButton = document.getElementById('clearButton');
 
-    const circleParams = document.getElementById('circleParams');
-    const squareParams = document.getElementById('squareParams');
-    const triangleParams = document.getElementById('triangleParams');
+  const circleParams = document.getElementById('circleParams');
+  const squareParams = document.getElementById('squareParams');
+  const triangleParams = document.getElementById('triangleParams');
 
-    const radiusInput = document.getElementById('radiusInput');
-    const sideInput = document.getElementById('sideInput');
-    const sideAInput = document.getElementById('sideAInput');
-    const sideBInput = document.getElementById('sideBInput');
-    const sideCInput = document.getElementById('sideCInput');
+  const radiusInput = document.getElementById('radiusInput');
+  const sideInput = document.getElementById('sideInput');
+  const sideAInput = document.getElementById('sideAInput');
+  const sideBInput = document.getElementById('sideBInput');
+  const sideCInput = document.getElementById('sideCInput');
 
-    let shapes = [];
+  let shapes = [];
 
     if (localStorage.getItem('shapes')) {
         try {
@@ -108,15 +128,15 @@ window.addEventListener('load', function() {
         }
     });
 
-    undoButton.addEventListener('click', function() {
-        shapes.pop();
-        redrawCanvas();
-        saveShapes();
-    });
+  undoButton.addEventListener('click', function() {
+      shapes.pop();
+      redrawCanvas();
+      saveShapes();
+  });
 
-    clearButton.addEventListener('click', function() {
-        shapes = [];
-        redrawCanvas();
-        localStorage.removeItem('shapes');
-    });
+  clearButton.addEventListener('click', function() {
+      shapes = [];
+      redrawCanvas();
+      localStorage.removeItem('shapes');
+  });
 });
