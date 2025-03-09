@@ -1,17 +1,10 @@
 /**
-
-Author: Liyu, Nevathan 
-
-Student Number: 400559252, 400576019
-
-Date Created: Mar 6 2025
-
-
-
-This JavaScript file defines the Circle class, which represents a circle shape on an HTML5 canvas.
-
-*/
-
+ * Author: Liyu, Nevathan
+ * Student Number: 400559252, 400576019
+ * Date Created: Mar 6 2025
+ *
+ * Defines the Circle class for drawing a circle on an HTML5 canvas.
+ */
 
 export class Circle {
   constructor(radius, color, x, y) {
