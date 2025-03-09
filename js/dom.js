@@ -1,32 +1,24 @@
 /**
+ * Author: Liyu, Nevathan
+ * Student Numbers: 400559252, 400576019
+ * Date Created: Mar 6, 2025
+ *
+ * This JavaScript file handles user interactions for drawing shapes on an HTML5 canvas.
+ * Users can select a shape, set its color and dimensions, and draw it on the canvas.
+ * The application supports undoing the last shape, clearing the canvas, and saving shapes to local storage.
+ */
 
-Author: Liyu, Nevathan 
-
-Student Number: 400559252, 400576019
-
-Date Created: Mar 6 2025
-
-
-
-This JavaScript file handles user interactions for drawing shapes on an HTML5 canvas.
-
-Users can select a shape, set its color and dimensions, and draw it on the canvas.
-
-The application supports undoing the last shape, clearing the canvas, and saving shapes to local storage.
-
-
-*/
-
-
-import { Circle} from './circle.js';
+import { Circle } from './circle.js';
 import { Square } from './square.js';
 import { Triangle } from './triangle.js';
 
 window.addEventListener('load', function() {
+    // Setup canvas and context
     const canvas = document.getElementById('drawingCanvas');
     const ctx = canvas.getContext('2d');
     window.ctx = ctx; 
 
+    // Setup form elements for user input
     const shapeSelect = document.getElementById('shapeSelect');
     const colorInput = document.getElementById('colorInput');
     const drawButton = document.getElementById('drawButton');
@@ -45,6 +37,7 @@ window.addEventListener('load', function() {
 
     let shapes = [];
 
+    // Load stored shapes from localStorage, if any
     if (localStorage.getItem('shapes')) {
         try {
             const storedShapes = JSON.parse(localStorage.getItem('shapes'));
@@ -61,6 +54,9 @@ window.addEventListener('load', function() {
         }
     }
 
+    /**
+     * Saves shapes array to localStorage as a JSON string.
+     */
     function saveShapes() {
         const shapesToStore = shapes.map(shape => ({
             ...shape,
@@ -69,11 +65,17 @@ window.addEventListener('load', function() {
         localStorage.setItem('shapes', JSON.stringify(shapesToStore));
     }
 
+    /**
+     * Clears the canvas and redraws all shapes from the shapes array.
+     */
     function redrawCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         shapes.forEach(shape => shape.draw());
     }
 
+    /**
+     * Event listener to toggle the visibility of input fields based on selected shape.
+     */
     shapeSelect.addEventListener('change', function() {
         const shape = shapeSelect.value;
         circleParams.style.display = shape === 'circle' ? 'inline-block' : 'none';
@@ -83,6 +85,9 @@ window.addEventListener('load', function() {
         colorInput.className = shape;
     });
 
+    /**
+     * Changes the background color of the color input based on the selected shape.
+     */
     colorInput.addEventListener('input', () => {
         if (shapeSelect.value === 'triangle') {
             colorInput.style.backgroundColor = colorInput.value;
@@ -91,6 +96,13 @@ window.addEventListener('load', function() {
         }
     });
 
+    /**
+     * Creates a shape object based on user input and shape selection.
+     * 
+     * @param {Number} x - The x-coordinate of the shape's position on the canvas.
+     * @param {Number} y - The y-coordinate of the shape's position on the canvas.
+     * @returns {Circle|Square|Triangle|null} - The shape object or null if no shape is selected.
+     */
     function createShape(x, y) {
         const color = colorInput.value;
         switch(shapeSelect.value) {
@@ -109,6 +121,11 @@ window.addEventListener('load', function() {
         }
     }
 
+    /**
+     * Event listener for canvas click. Creates and draws a shape at the click position.
+     * 
+     * @param {MouseEvent} e - The mouse event that contains the click position.
+     */
     canvas.addEventListener('click', function(e) {
         const rect = canvas.getBoundingClientRect();
         const shape = createShape(e.clientX - rect.left, e.clientY - rect.top);
@@ -119,6 +136,9 @@ window.addEventListener('load', function() {
         }
     });
 
+    /**
+     * Event listener for the draw button. Creates and draws a shape at the center of the canvas.
+     */
     drawButton.addEventListener('click', function() {
         const shape = createShape(canvas.width / 2, canvas.height / 2);
         if (shape) {
@@ -128,15 +148,21 @@ window.addEventListener('load', function() {
         }
     });
 
+    /**
+     * Event listener for the undo button. Removes the last shape from the shapes array and redraws the canvas.
+     */
     undoButton.addEventListener('click', function() {
         shapes.pop();
         redrawCanvas();
         saveShapes();
     });
-  
+
+    /**
+     * Event listener for the clear button. Clears all shapes and removes them from localStorage.
+     */
     clearButton.addEventListener('click', function() {
         shapes = [];
         redrawCanvas();
         localStorage.removeItem('shapes');
     });
-  });
+});
